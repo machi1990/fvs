@@ -1,5 +1,6 @@
 package algorithms;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.awt.Point;
 
 public class Evaluation {
@@ -38,4 +39,14 @@ public class Evaluation {
 
     return result;
   }
-}
+  
+  private HashMap<Point, Integer> degrees (ArrayList<Point> points) {
+	  HashMap<Point, Integer> degree  =new HashMap<>();
+	  
+	  for (Point p: points) {
+		  degree.put(p, neighbor(p, points).size());
+	  }
+	  
+	  return degree;
+  }
+ }

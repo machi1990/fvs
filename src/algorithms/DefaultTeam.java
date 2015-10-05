@@ -2,6 +2,7 @@ package algorithms;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class DefaultTeam {
 
@@ -19,4 +20,34 @@ public class DefaultTeam {
 	  
 	  return null;
   }
+  
+  public void cleanup(HashMap<Point,Node> nodes){
+	  boolean clean;
+	  do{
+		  clean = true;
+		  
+		  for(Point p : nodes.keySet()){
+			  
+			  Node n = nodes.get(p);
+			  
+			  if(n.getDegree() <= 1 ){
+				  
+				  for(Point neighbor : n.getNeighbors() ){
+					  nodes.get(neighbor).removeNeighbor(p);
+				  }
+				  
+				  nodes.remove(p);
+				  clean = false;
+				  
+				  break;
+			  }
+		  }
+		  
+	  }while(!clean);
+  }
+  
+  public ArrayList<Point> circleCheck(ArrayList<Point> points){
+	  return null;
+  }
+  
 }

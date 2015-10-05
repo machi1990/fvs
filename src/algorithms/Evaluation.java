@@ -32,7 +32,7 @@ public class Evaluation {
 
     return true;
   }
-  private ArrayList<Point> neighbor(Point p, ArrayList<Point> vertices){
+  public static ArrayList<Point> neighbor(Point p, ArrayList<Point> vertices){
     ArrayList<Point> result = new ArrayList<Point>();
 
     for (Point point:vertices) if (point.distance(p)<100 && !point.equals(p)) result.add((Point)point.clone());
@@ -40,8 +40,8 @@ public class Evaluation {
     return result;
   }
   
-  private HashMap<Point, Integer> degrees (ArrayList<Point> points) {
-	  HashMap<Point, Integer> degree  =new HashMap<>();
+  public static HashMap<Point, Integer> degrees (ArrayList<Point> points) {
+	  HashMap<Point, Integer> degree  = new HashMap<>();
 	  
 	  for (Point p: points) {
 		  degree.put(p, neighbor(p, points).size());

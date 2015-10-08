@@ -16,14 +16,15 @@ public class DefaultTeam {
 		ArrayList<Point> cycle = null, fvs = new ArrayList<Point>();
 		Stack<Point> stack = new Stack<>();
 		Point[] temps;
-		Point temp;
+		Point minNode;
 
 		double lambda;
 
-		cleanup(nodes);
-
+		cleanup(nodes);	
+		
 		while (!nodes.keySet().isEmpty()) {
-			//cycle = cycleCheck(nodes); // TODO
+			
+			cycle = cycleCheck(nodes);
 			
 			if (cycle != null) {
 				lambda = min(cycle, nodes);
@@ -41,12 +42,12 @@ public class DefaultTeam {
 			temps = nodes.keySet().toArray(new Point[0]);
 
 			for (int i = 0; i < temps.length; ++i) {
-				temp = temps[i];
+				minNode = temps[i];
 
-				if (nodes.get(temp).getWeight() == 0) {
-					fvs.add((Point) temp.clone());
-					stack.push((Point) temp.clone());
-					nodes.remove(temp);
+				if (nodes.get(minNode).getWeight() == 0) {
+					fvs.add(minNode);
+					stack.push(minNode);
+					removeMinWeightedNode(minNode, nodes);
 				}
 
 			}
@@ -166,8 +167,10 @@ public class DefaultTeam {
 				if (origin.getDegree() > 2) // and may not be jokers
 					current_joker = origin;
 			}
+			
 			while (!green.isEmpty()) {
 				Node current_node = green.remove(0);
+
 				for (Point p : current_node.getNeighbors()) {
 					Node current_neighbor = nodes.get(p);
 
@@ -221,4 +224,17 @@ public class DefaultTeam {
 		}
 	}
 
+	private void removeMinWeightedNode(Point node, HashMap<Point, Node> nodes) {
+		nodes.remove(node);
+		
+		for (Point p: nodes.keySet()) {
+			if (p.equals(node)) {
+				continue;
+			}
+			
+			if(nodes.get(p).getNeighbors().contains(node)) {
+				nodes.get(p).getNeighbors().remove(node);
+			}
+		}
+	}
 }

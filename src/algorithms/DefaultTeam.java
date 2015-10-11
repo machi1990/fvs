@@ -3,6 +3,7 @@ package algorithms;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map.Entry;
 import java.util.Stack;
 
 public class DefaultTeam {
@@ -93,8 +94,8 @@ public class DefaultTeam {
 	private double min(HashMap<Point, Node> nodes) {
 		Double lambda = Double.MAX_VALUE;
 		double tempWeight;
-		for (Point p : nodes.keySet()) {
-			tempWeight = nodes.get(p).getWeight() / (nodes.get(p).getDegree() - 1);
+		for (Node node : nodes.values()) {
+			tempWeight = node.getWeight() / (node.getDegree() - 1);
 			if (tempWeight < lambda) {
 				lambda = tempWeight;
 			}
@@ -107,10 +108,10 @@ public class DefaultTeam {
 		boolean clean;
 		do {
 			clean = true;
-
-			for (Point p : nodes.keySet()) {
-
-				Node n = nodes.get(p);
+			
+			for (Entry<Point,Node> e : nodes.entrySet()) {
+				Point p = e.getKey();
+				Node n = e.getValue();
 
 				if (n.getDegree() <= 1) {
 
@@ -224,17 +225,22 @@ public class DefaultTeam {
 		}
 	}
 
-	private void removeMinWeightedNode(Point node, HashMap<Point, Node> nodes) {
-		nodes.remove(node);
-		
-		for (Point p: nodes.keySet()) {
-			if (p.equals(node)) {
-				continue;
-			}
-			
-			if(nodes.get(p).getNeighbors().contains(node)) {
-				nodes.get(p).getNeighbors().remove(node);
-			}
+	private void removeMinWeightedNode(Point point, HashMap<Point, Node> nodes) {
+//		nodes.remove(node);
+//		
+//		for (Point p: nodes.keySet()) {
+//			if (p.equals(node)) {
+//				continue;
+//			}
+//			
+//			if(nodes.get(p).getNeighbors().contains(node)) {
+//				nodes.get(p).getNeighbors().remove(node);
+//			}
+//		}
+		Node node = nodes.get(point);
+		for(Point neighbor_point : node.getNeighbors()){
+			nodes.get(neighbor_point).removeNeighbor(point);
 		}
+		nodes.remove(point);
 	}
 }
